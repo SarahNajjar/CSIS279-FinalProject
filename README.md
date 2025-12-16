@@ -1,14 +1,15 @@
 <!-- Project Badges -->
 <p align="center">
   <img src="https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white&labelColor=20232A" />
-  <img src="https://img.shields.io/badge/Node.js-Express-339933?logo=node.js&logoColor=white&labelColor=2C2C2C" />
+  <img src="https://img.shields.io/badge/Redux_Toolkit-State-764ABC?logo=redux&logoColor=white&labelColor=2C2C2C" />
+  <img src="https://img.shields.io/badge/NestJS-GraphQL-E0234E?logo=nestjs&logoColor=white&labelColor=1E1E1E" />
+  <img src="https://img.shields.io/badge/TypeORM-ORM-FF6F00?labelColor=2C2C2C" />
   <img src="https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white&labelColor=1E2A3A" />
-  <img src="https://img.shields.io/badge/Socket.IO-Real--time-010101?logo=socket.io&logoColor=white&labelColor=2C2C2C" />
-  <img src="https://img.shields.io/badge/TensorFlow/BERT-AI-orange?labelColor=2C2C2C" />
+  <img src="https://img.shields.io/badge/Toxicity_Blocking-NLP-orange?labelColor=2C2C2C" />
 </p>
 
 <h1 align="center">🎬 CineStream</h1>
-<p align="center"><i>An intelligent, social movie platform with real-time chat, AI recommendations, and toxicity detection.</i></p>
+<p align="center"><i>A Netflix-inspired full-stack movie platform with reviews, watchlists, admin dashboard, and optional toxicity blocking.</i></p>
 
 ---
 
@@ -21,270 +22,332 @@
   - [Prerequisites](#prerequisites)
   - [Environment Variables](#environment-variables)
   - [Install & Run (Two Terminals)](#install--run-two-terminals)
-- [Database Schema (Overview)](#-database-schema-overview)
-- [Core API Endpoints](#-core-api-endpoints)
-- [Roadmap / Timeline](#-roadmap--timeline)
+- [GraphQL API](#-graphql-api)
+  - [Playground](#playground)
+  - [Example Queries & Mutations](#example-queries--mutations)
+- [Database (Overview)](#-database-overview)
+- [Auth & Roles](#-auth--roles)
+- [Ratings](#-ratings)
 - [Common Tasks](#-common-tasks)
-- [Contributing](#-contributing)
-- [License](#-license)
 
 ---
 
 ## 🧠 About
-**CineStream** is a Netflix-inspired full-stack web app for discovering, rating, and discussing movies.  
-Beyond classic features (watchlists, favorites, reviews), CineStream adds:
-- **Real-time movie chatrooms** (Socket.IO)
-- **AI-powered recommendations** (hybrid content + collaborative filtering)
-- **Toxicity detection** in chat & reviews (BERT/Detoxify-style models)
+**CineStream** is a full-stack web application for discovering, saving, and reviewing movies.
+
+It includes:
+- Viewer features (browse catalog, watchlist, reviews/ratings)
+- Admin features (movie management, moderation tools)
+- Optional **toxicity blocking** for reviews (and chat if enabled)
 
 **Roles**
-- **Viewers:** browse the catalog, manage watchlist/favorites, review & chat.
-- **Admins:** manage movies, genres, users; moderate reviews and chats.
+- **Viewer:** browse movies, manage watchlist, submit reviews/ratings.
+- **Admin:** access `/admin` dashboard to manage data and moderate content.
+
+> ✅ Admin access is based on `user.role === "admin"` (NOT `is_admin`).
 
 ---
 
 ## ✨ Features
-- 🔐 **Auth & Roles** – Viewer/Admin with protected routes.
-- 👤 **Profiles** – Multiple profiles per account (like Netflix).
-- 🎞️ **Catalog** – Posters, descriptions, trailers, genres.
-- 🏷️ **Genres** – Action, Drama, Comedy, Sci-Fi, etc.
-- 📺 **Watchlist / My List** – Save to watch later.
-- ❤️ **Favorites** – Quick access to loved titles.
-- ⭐ **Reviews & Ratings** – 1–5 stars plus comments.
-- 💬 **Real-time Chat** – Movie rooms, low-latency, scalable rooms/namespaces.
-- 🤖 **AI Recommendations** – Personalized suggestions.
-- 🛡️ **Toxicity Detection** – NLP moderation (chat & reviews).
-- 🛠️ **Admin Panel** – CRUD movies/genres, moderation tools.
+- 🔐 **Authentication** – JWT login + session persistence
+- 🧑‍💻 **Role-based access** – Admin dashboard protected
+- 🎞️ **Movies Catalog** – posters, trailers, runtime, year
+- 🏷️ **Genres** – relation between `movies` and `genres`
+- 📌 **Watchlist** – add/remove movies
+- ⭐ **Reviews & Ratings** – 1–5 stars + text review
+- 🛡️ **Optional toxicity blocking** – backend can reject toxic reviews
+- 🛠️ **Admin Panel** – manage Movies / Users / Reviews
 
 ---
 
 ## 🛠 Tech Stack
-**Frontend:** React (Vite), Tailwind/Bootstrap (responsive UI)  
-**Backend:** Node.js, Express (REST), Socket.IO (WebSockets)  
-**Database:** **PostgreSQL** (users, profiles, movies, genres, watchlists, favorites, reviews, chats)  
-**AI:** Collaborative + content-based recommender (scikit-learn/TensorFlow), toxicity detection (BERT-style)  
-**Tools:** **pgAdmin**, psql, dbdiagram.io, Git/GitHub
+**Frontend**
+- React (Vite)
+- Redux Toolkit
+- Tailwind CSS
+- Axios (GraphQL client)
+
+**Backend**
+- NestJS
+- GraphQL (code-first)
+- TypeORM
+
+**Database**
+- PostgreSQL
+
+**Optional**
+- Toxicity detection (review/chat moderation)
 
 ---
 
 ## 🗂 Monorepo Structure
-
-```
-
+```txt
 .
-├─ api/                # Express server, REST, Socket.IO, DB access
-├─ frontend/           # React app (Vite)
-├─ .vscode/            # (optional) workspace settings
-├─ package.json        # (optional) root scripts for tooling
-└─ README.md
-
+├─ api/                # NestJS backend (GraphQL + TypeORM)
+├─ frontend/           # React app (Vite + Redux Toolkit)
+├─ README.md
+└─ package.json        # (optional root scripts)
 ````
-
 
 ---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- **Node.js** ≥ 18
-- **PostgreSQL** ≥ 15
-- **npm** ≥ 9
 
-> Tip: ensure PostgreSQL is running and you have a database/user ready.
+* Node.js ≥ 18
+* PostgreSQL ≥ 15
+* npm ≥ 9
 
 ### Environment Variables
 
 **api/.env**
+
 ```env
 # Server
 PORT=4000
 NODE_ENV=development
-CORS_ORIGIN=http://localhost:5173
 
-# JWT / Security
+# Database (PostgreSQL)
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=postgres
+DB_PASSWORD=your_password
+DB_NAME=cinestream
+
+# JWT (if used)
 JWT_SECRET=supersecretjwt
 JWT_EXPIRES_IN=7d
 
-# PostgreSQL
-PGHOST=localhost
-PGPORT=5432
-PGUSER=postgres
-PGPASSWORD=your_password
-PGDATABASE=cinestream
-
-````
+# CORS (if configured)
+CORS_ORIGIN=http://localhost:5173
+```
 
 **frontend/.env**
 
 ```env
-# Vite expects VITE_ prefix
 VITE_API_BASE_URL=http://localhost:4000
 ```
 
 ### Install & Run (Two Terminals)
 
-> When you clone the repo, open **two terminals** (one for `api`, one for `frontend`):
-
-**Terminal 1 – Backend (api)**
+**Terminal 1 — Backend**
 
 ```bash
 cd api
 npm i
-npm run dev
-# Server on http://localhost:4000
+npm run start:dev
+# Backend: http://localhost:4000/graphql
 ```
 
-**Terminal 2 – Frontend (frontend)**
+**Terminal 2 — Frontend**
 
 ```bash
 cd frontend
 npm i
 npm run dev
-# Vite on http://localhost:5173
+# Frontend: http://localhost:5173
 ```
 
 ---
 
-## 🗄 Database Schema (Overview)
+## 🔌 GraphQL API
 
-Tables (minimum):
+### Playground
 
-* `users` (id, name, email, password_hash, role)
-* `profiles` (id, user_id, display_name, avatar_url)
+* Open: `http://localhost:4000/graphql`
+
+### Example Queries & Mutations
+
+#### ✅ Login
+
+```graphql
+mutation Login($email: String!, $password: String!) {
+  login(loginInput: { email: $email, password: $password }) {
+    token
+    user {
+      id
+      email
+      role
+    }
+  }
+}
+```
+
+Variables:
+
+```json
+{
+  "email": "admin@email.com",
+  "password": "123456"
+}
+```
+
+#### ✅ Get Movies
+
+```graphql
+query {
+  movies {
+    id
+    title
+    description
+    poster_path
+    trailer_path
+    release_year
+    duration
+    genre {
+      id
+      name
+    }
+  }
+}
+```
+
+#### ✅ Get Single Movie
+
+```graphql
+query ($id: Int!) {
+  movie(id: $id) {
+    id
+    title
+    description
+    poster_path
+    trailer_path
+    release_year
+    duration
+    genre {
+      id
+      name
+    }
+    reviews {
+      id
+      rating
+      review_text
+      created_at
+      user {
+        id
+        email
+      }
+    }
+  }
+}
+```
+
+Variables:
+
+```json
+{ "id": 1 }
+```
+
+#### ✅ Create Review
+
+```graphql
+mutation ($createReviewInput: CreateReviewInput!) {
+  createReview(createReviewInput: $createReviewInput) {
+    id
+    movie_id
+    profile_id
+    rating
+    review_text
+    created_at
+  }
+}
+```
+
+Variables:
+
+```json
+{
+  "createReviewInput": {
+    "movie_id": 1,
+    "profile_id": 2,
+    "rating": 5,
+    "review_text": "Great movie!"
+  }
+}
+```
+
+#### ✅ Delete Review
+
+```graphql
+mutation ($id: Int!) {
+  deleteReview(id: $id)
+}
+```
+
+Variables:
+
+```json
+{ "id": 10 }
+```
+
+---
+
+## 🗄 Database Overview
+
+Typical tables (depending on your implementation):
+
+* `users` (id, email, password_hash, role, ...)
 * `genres` (id, name)
-* `movies` (id, title, description, release_year, poster_path, trailer_url, genre_id)
-* `watchlists` (id, profile_id, movie_id) **UNIQUE(profile_id, movie_id)**
-* `favorites` (id, profile_id, movie_id) **UNIQUE(profile_id, movie_id)**
-* `reviews` (id, profile_id, movie_id, rating, comment, created_at)
-* `chats` (id, movie_id, profile_id, message, created_at)
-
-> Add **UNIQUE** constraints to prevent duplicates in `watchlists`, `favorites`, and one review per profile per movie if desired.
+* `movies` (id, title, description, genre_id, poster_path, trailer_path, release_year, duration, created_at)
+* `reviews` (id, movie_id, profile_id, rating, review_text, created_at)
+* `watchlist` (id, profile_id, movie_id, ...)
 
 ---
 
-## 🔌 Core API Endpoints
+## 🔐 Auth & Roles
 
-> Prefix: `/api` (e.g., `http://localhost:4000/api`)
+* After login, backend returns `{ token, user }`
+* Admin routing uses `user.role`:
 
-**Auth**
+  * Admin: `role === "admin"` → `/admin`
+  * Viewer: anything else → `/`
 
-* `POST /auth/register` → `{ token, user }`
-* `POST /auth/login` → `{ token, user }`
-* `GET /auth/profile` (Bearer token)
-
-**Movies**
-
-* `GET /movies` – list (supports search/filter)
-* `GET /movies/top-rated` – with `average_rating`, `total_ratings`
-* `GET /movies/:id`
-* `POST /movies` *(admin)* – create
-* `PUT /movies/:id` *(admin)*
-* `DELETE /movies/:id` *(admin)*
-
-**Genres**
-
-* CRUD endpoints *(admin)*
-
-**Watchlist & Favorites**
-
-* `GET /profiles/:id/watchlist`
-* `POST /watchlist/toggle` (profile_id, movie_id)
-* `GET /profiles/:id/favorites`
-* `POST /favorites/toggle`
-
-**Reviews**
-
-* `GET /movies/:id/reviews`
-* `POST /reviews` (profile_id, movie_id, rating, comment)
-* `DELETE /reviews/:id` *(admin or owner)*
-
-**Chat (Socket.IO)**
-
-* Namespace: `/chat`
-* Room: `movie:{movieId}`
-* Events: `join`, `message`, `moderation:flagged`, `leave`
+> ⚠️ If you see: `Cannot query field "is_admin" on type "User"`
+> Remove `is_admin` from your frontend queries and use `role` only.
 
 ---
 
-## 🗺 Roadmap / Timeline
+## ⭐ Ratings
 
-**Phase 1 (Weeks 1–2): Setup & DB**
+### What you see in the UI
 
-* React + Express scaffolding, MySQL schema, DB connection
+* Movie cards and details display a rating like **4.2 (12)**.
 
-**Phase 2 (Weeks 3–4): Auth & Profiles**
+### How it is calculated
 
-* Signup/login, roles, multiple profiles, protected routes
+You have two options:
 
-**Phase 3 (Weeks 5–6): Core Catalog**
+✅ **Option A (Backend computed fields — best)**
 
-* Movies, genres, posters, trailers, watchlist, favorites
+* Add `average_rating` and `total_ratings` to the `Movie` GraphQL type using a resolver that aggregates reviews in SQL.
+* Fast and clean.
 
-**Phase 4 (Weeks 7–8): Reviews, Chat, AI Toxicity**
+✅ **Option B (Frontend fallback — works now)**
 
-* Reviews/ratings + Socket.IO chat + NLP moderation
-
-**Phase 5 (Weeks 9–10): AI Recs & Polish**
-
-* Hybrid recommender, admin moderation tools, QA & demo
+* Fetch `movie.reviews { rating }` and compute average in React.
+* Works, but heavier when movie lists get large.
 
 ---
 
 ## 🧰 Common Tasks
 
-**Remove `node_modules` from GitHub (keep locally)**
+### Remove node_modules from Git
 
 ```bash
-git rm -r --cached node_modules api/node_modules
-echo -e "node_modules/\napi/node_modules/" >> .gitignore
+git rm -r --cached node_modules api/node_modules frontend/node_modules
+echo -e "node_modules/\napi/node_modules/\nfrontend/node_modules/" >> .gitignore
 git add .gitignore
-git commit -m "Remove node_modules from repo and ignore them"
+git commit -m "chore: ignore node_modules"
 git push origin main
 ```
 
-**Seed / Migrate (example)**
+### Verify GraphQL schema has your fields
 
-```bash
-# Depending on your setup:
-npm run migrate
-npm run seed
-```
-
-**Environment sanity check**
-
-* Backend prints `Server listening on :4000`
-* Frontend uses `VITE_API_BASE_URL` to hit the API
-* CORS allows `http://localhost:5173`
-
----
-
-## 🤝 Contributing
-
-1. Fork the repo
-2. Create a feature branch: `git checkout -b feat/awesome-thing`
-3. Commit: `git commit -m "feat: add awesome thing"`
-4. Push: `git push origin feat/awesome-thing`
-5. Open a Pull Request
-
----
-
-## 📄 License
-
-This project is for educational use. For production licensing, add a LICENSE file (MIT recommended).
-
----
-
-### 🍿 Screenshots (Optional)
-
-You can add screenshots/gifs here:
-
-```
-frontend/public/screenshots/
-```
-
-Then reference them:
-
-```md
-![Home](public/screenshots/home.png)
-![Movie Details](public/screenshots/details.png)
+```graphql
+query {
+  __type(name: "User") {
+    fields { name }
+  }
+}
 ```
