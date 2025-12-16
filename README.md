@@ -1,3 +1,6 @@
+
+
+````md
 <!-- Project Badges -->
 <p align="center">
   <img src="https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white&labelColor=20232A" />
@@ -5,6 +8,7 @@
   <img src="https://img.shields.io/badge/NestJS-GraphQL-E0234E?logo=nestjs&logoColor=white&labelColor=1E1E1E" />
   <img src="https://img.shields.io/badge/TypeORM-ORM-FF6F00?labelColor=2C2C2C" />
   <img src="https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white&labelColor=1E2A3A" />
+  <img src="https://img.shields.io/badge/Socket.IO-Real--time-010101?logo=socket.io&logoColor=white&labelColor=2C2C2C" />
   <img src="https://img.shields.io/badge/Toxicity_Blocking-NLP-orange?labelColor=2C2C2C" />
 </p>
 
@@ -29,6 +33,8 @@
 - [Auth & Roles](#-auth--roles)
 - [Ratings](#-ratings)
 - [Common Tasks](#-common-tasks)
+- [Roadmap](#-roadmap)
+- [License](#-license)
 
 ---
 
@@ -76,6 +82,7 @@ It includes:
 - PostgreSQL
 
 **Optional**
+- Socket.IO (real-time chat rooms)
 - Toxicity detection (review/chat moderation)
 
 ---
@@ -350,4 +357,38 @@ query {
     fields { name }
   }
 }
+
+```
+
+---
+
+## 🗺 Roadmap
+
+* [ ] Add backend `average_rating` + `total_ratings` to Movie
+* [ ] One review per user per movie (optional uniqueness)
+* [ ] Add real-time chat rooms (Socket.IO)
+* [ ] Add toxicity detection in chat + admin moderation queue
+* [ ] Add recommendations (content + collaborative)
+
+---
+
+## 📄 License
+
+Educational / portfolio project. Add an MIT LICENSE if publishing publicly.
+
+---
+
+### 🍿 Screenshots (Optional)
+
+Place screenshots in:
+
+```txt
+frontend/public/screenshots/
+```
+
+Then reference them:
+
+```md
+![Home](public/screenshots/home.png)
+![Movie Details](public/screenshots/details.png)
 ```
