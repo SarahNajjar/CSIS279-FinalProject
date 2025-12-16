@@ -1,0 +1,172 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type AuthResponse {
+  token: String!
+  user: User!
+}
+
+input CreateGenreInput {
+  name: String!
+}
+
+input CreateMovieInput {
+  description: String
+  duration: Int
+  genre_id: Int
+  poster_path: String
+  release_year: Int
+  title: String!
+  trailer_path: String
+}
+
+input CreateReviewInput {
+  movie_id: Int!
+  profile_id: Int
+  rating: Int
+  review_text: String
+}
+
+input CreateUserInput {
+  email: String!
+  password: String!
+  role: String = "viewer"
+  username: String!
+}
+
+input CreateWatchlistInput {
+  movie_id: Int!
+  profile_id: Int!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Genre {
+  id: Int!
+  movies: [Movie!]
+  name: String!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type Movie {
+  average_rating: Float
+  created_at: DateTime!
+  description: String!
+  duration: Int
+  durationFormatted: String
+  genre: Genre
+  genre_id: Int!
+  id: Int!
+  poster_path: String
+  release_year: Int
+  reviews: [Review!]
+  title: String!
+  total_ratings: Int
+  trailer_path: String
+}
+
+type Mutation {
+  createGenre(createGenreInput: CreateGenreInput!): Genre!
+  createMovie(createMovieInput: CreateMovieInput!): Movie!
+  createReview(createReviewInput: CreateReviewInput!): Review!
+  createUser(createUserInput: CreateUserInput!): User!
+  createWatchlist(createWatchlistInput: CreateWatchlistInput!): Watchlist!
+  deleteReview(id: Int!): Boolean!
+  login(loginInput: LoginInput!): AuthResponse!
+  removeGenre(id: Int!): Boolean!
+  removeMovie(id: Int!): Boolean!
+  removeUser(id: Int!): Boolean!
+  removeWatchlist(id: Int!): Boolean!
+  updateGenre(updateGenreInput: UpdateGenreInput!): Genre!
+  updateMovie(id: Int!, input: UpdateMovieInput!): Movie!
+  updateReview(updateReviewInput: UpdateReviewInput!): Review!
+  updateUser(id: Int!, updateUserInput: UpdateUserInput!): User!
+  updateWatchlist(updateWatchlistInput: UpdateWatchlistInput!): Watchlist!
+}
+
+type Query {
+  genre(id: Int!): Genre!
+  genres: [Genre!]!
+  movie(id: Int!): Movie!
+  movies: [Movie!]!
+  review(id: Int!): Review!
+  reviews: [Review!]!
+  user(id: Int!): User!
+  users: [User!]!
+  watchlist(id: Int!): Watchlist!
+  watchlists: [Watchlist!]!
+}
+
+type Review {
+  created_at: DateTime!
+  id: Int!
+  movie: Movie
+  movie_id: Int!
+  profile_id: Int
+  rating: Int
+  review_text: String
+  user: User
+}
+
+input UpdateGenreInput {
+  id: Int!
+  name: String
+}
+
+input UpdateMovieInput {
+  description: String
+  duration: Int
+  genre_id: Int
+  poster_path: String
+  release_year: Int
+  title: String
+  trailer_path: String
+}
+
+input UpdateReviewInput {
+  id: Int!
+  movie_id: Int
+  profile_id: Int
+  rating: Int
+  review_text: String
+}
+
+input UpdateUserInput {
+  email: String
+  password: String
+  role: String
+  username: String
+}
+
+input UpdateWatchlistInput {
+  id: Int!
+  movie_id: Int
+  profile_id: Int
+}
+
+type User {
+  createdAt: DateTime!
+  email: String!
+  id: Int!
+  reviews: [Review!]
+  role: String!
+  updatedAt: DateTime!
+  username: String!
+}
+
+type Watchlist {
+  created_at: DateTime!
+  id: Int!
+  movie: Movie
+  movie_id: Int!
+  profile_id: Int!
+  user: User
+}
